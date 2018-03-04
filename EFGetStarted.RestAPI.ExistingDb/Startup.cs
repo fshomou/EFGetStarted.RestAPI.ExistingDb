@@ -25,7 +25,7 @@ namespace EFGetStarted.RestAPI.ExistingDb
                 
 
             services.AddMvc();
-            string connection = @"Server=(localdb)\mssqllocaldb;Database=BloggingTest;Trusted_Connection=True;ConnectRetryCount=0";
+            string connection = @"Server=(localdb)\mssqllocaldb;Database=BloggingGeneric;Trusted_Connection=True;ConnectRetryCount=0";
 
             //services.AddDbContext<BloggingContext>(options => options.UseSqlServer(connection));
             //services.AddTransient<IBlogRepository, EFGetStarted.RestAPI.ExistingDb.Data.BlogsRepository>();
