@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EFGetStarted.RestAPI.ExistingDb.Models;
 using EFGetStarted.RestAPI.ExistingDb.Data;
+using EFGetStarted.RestAPI.ExistingDb.DTO;
+using EFGetStarted.RestAPI.ExistingDb.DLL;
 
 namespace EFGetStarted.RestAPI.ExistingDb.Controllers
 {
@@ -28,24 +30,40 @@ namespace EFGetStarted.RestAPI.ExistingDb.Controllers
             return await this._unitOfWork.GetRepository<Blog>().Get();
         }
 
-        //// GET: api/Blogs/5
-        //[HttpGet("{id}")]
-        //public async Task<IActionResult> GetBlog([FromRoute] int id)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+        [HttpPost]
+        public async Task<IActionResult> PostBlog([FromBody]BlogDto BlogDto)
+        {
 
-        //    var blog = await _context.Blog.SingleOrDefaultAsync(m => m.BlogId == id);
+            if (BlogDto != null)
+            {
+                BlogManager blogManager = new BlogManager(_unitOfWork);
 
-        //    if (blog == null)
-        //    {
-        //        return NotFound();
-        //    }
+                blogManager.AddBlog(BlogDto);
+            }
 
-        //    return Ok(blog);
-        //}
+            return CreatedAtAction(actionName: "GetBlog", routeValues: new { id = BlogDto.BlogId }, value: BlogDto);
+
+
+        }
+
+        // GET: api/Blogs/5
+        [HttpGet("{id}")]
+        public IActionResult GetBlog([FromRoute] int id)
+        {
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
+            //var blog = await this._unitOfWork.GetRepository<Blog>().Single(m => m.BlogId == id);
+            ////var blog = await _context.Blog.SingleOrDefaultAsync(m => m.BlogId == id);
+
+            //if (blog == null)
+            //{
+            //    return NotFound();
+            //}
+
+            return Ok();
+        }
 
         //// PUT: api/Blogs/5
         //[HttpPut("{id}")]
@@ -82,7 +100,7 @@ namespace EFGetStarted.RestAPI.ExistingDb.Controllers
         //    return NoContent();
         //}
 
-        //// POST: api/Blogs
+        // POST: api/Blogs
         //[HttpPost]
         //public async Task<IActionResult> PostBlog([FromBody] Blog blog)
         //{
@@ -91,10 +109,11 @@ namespace EFGetStarted.RestAPI.ExistingDb.Controllers
         //        return BadRequest(ModelState);
         //    }
 
-        //    _context.Blog.Add(blog);
-        //    await _context.SaveChangesAsync();
 
-        //    return CreatedAtAction("GetBlog", new { id = blog.BlogId }, blog);
+        //    this._unitOfWork.GetRepository<Blog>().Add(blog);
+        //    this._unitOfWork.SaveChanges();
+
+        //    return  CreatedAtAction(actionName: "GetBlog", routeValues: new { id = blog.BlogId }, value: blog);
         //}
 
         //// DELETE: api/Blogs/5

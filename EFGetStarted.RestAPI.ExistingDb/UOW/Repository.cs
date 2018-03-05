@@ -203,5 +203,38 @@ namespace EFGetStarted.RestAPI.ExistingDb.UOW
             return Task.FromResult(_dbSet.ToAsyncEnumerable().ToEnumerable<T>());
 
         }
+
+        // TODO
+        //public Task<T> Single(Expression<Func<T, bool>> predicate = null,
+
+        //   Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+
+        //   Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+
+        //   bool disableTracking = true)
+
+        //{
+
+        //    IQueryable<T> query = this._dbSet;
+
+        //    if (disableTracking) query = query.AsNoTracking();
+
+
+
+        //    if (include != null) query = include(query);
+
+
+
+        //    if (predicate != null) query = query.Where(predicate);
+
+
+
+        //    if (orderBy != null) return Task.FromResult(orderBy(query).FirstOrDefault());
+
+        //    return Task.FromResult(query.FirstOrDefault());
+
+
+        //}
+
     }
 }
