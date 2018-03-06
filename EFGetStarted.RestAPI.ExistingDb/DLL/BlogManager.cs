@@ -1,4 +1,5 @@
 ﻿using EFGetStarted.RestAPI.ExistingDb.DTO;
+using EFGetStarted.RestAPI.ExistingDb.DtoDLL;
 using EFGetStarted.RestAPI.ExistingDb.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -16,12 +17,12 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
             this._unitOfWork = unitOfWork;
         }
 
-        public int AddBlog(BlogDto BlogDto)
+        public int AddBlog(BlogDtoDll BlogDtoDll)
         {
             Blog blog = new Blog();
-            blog.Url = BlogDto.Url;
+            blog.Url = BlogDtoDll.Url;
 
-            foreach (var item in BlogDto.PostDto)   {
+            foreach (var item in BlogDtoDll.PostDtoDll)   {
                 Post post = new Post();
                 post.Content = item.Content;
                 blog.Post.Add(post);
@@ -38,9 +39,9 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
 
         }
 
-        public BlogDto GetBlog(int BlogId)
+        public BlogDtoDll GetBlog(int BlogId)
         {
-            BlogDto blogDto = new BlogDto();
+            BlogDtoDll BlogDtoDll = new BlogDtoDll();
             // We can write one line of code if you like =>_unitOfWork.GetRepository<Blog>().Add(blog);
             UOW.IRepository<Blog> repBlog = this._unitOfWork.GetRepository<Blog>();
 
@@ -50,20 +51,20 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
 
             Blog blog = repBlog.GetFirstOrDefault(m => m.BlogId == BlogId, include: source => source.Include(m => m.Post));
 
-            blogDto.BlogId = blog.BlogId;
-            blogDto.Url = blog.Url;
+            BlogDtoDll.BlogId = blog.BlogId;
+            BlogDtoDll.Url = blog.Url;
 
 
             foreach (var item in blog.Post)
             {
-                PostDto post = new PostDto();
+                PostDtoDll post = new PostDtoDll();
                 post.Content = item.Content;
-                blogDto.PostDto.Add(post);
+                BlogDtoDll.PostDtoDll.Add(post);
             }
 
 
 
-            return blogDto;
+            return BlogDtoDll;
 
         }
 

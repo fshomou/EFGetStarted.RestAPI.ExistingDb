@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using EFGetStarted.RestAPI.ExistingDb.Data;
 using System;
 using EFGetStarted.RestAPI.ExistingDb.GenericData;
-using EFGetStarted.RestAPI.ExistingDb.DTO;
+using EFGetStarted.RestAPI.ExistingDb.DLL;
+using EFGetStarted.RestAPI.ExistingDb.DtoDLL;
 
 namespace EFGetStarted.RestAPI.ExistingDb.Tests
 {
     [TestClass]
-    public class BlogUowControllerTests
+    public class DLLBlogTests
     {
         [TestMethod]
         public async Task Get_Blogs()
@@ -90,16 +91,16 @@ namespace EFGetStarted.RestAPI.ExistingDb.Tests
 
                     var uow = new UnitOfWork<DataContext>(context);
                     //var repo = uow.GetRepository<Blog>();
-                    var blogsUOWController = new BlogsUOWController(uow);
-                    BlogDto blog = new BlogDto();
-                    blog.Url = "test from VSfffffff";
+                    BlogManager blogManager = new BlogManager(uow);
 
-                    blogsUOWController.PostBlog(blog);
+                    BlogDtoDll blogDtoDll = new BlogDtoDll();
+                 
+                    blogDtoDll.Url = "test from VS";
+                    blogManager.AddBlog(blogDtoDll);
 
-                    //repo.Add(blog);
-                    //uow.SaveChanges();
+                 
 
-                                    }
+                 }
 
                 //Use a separate instance of the context to verify correct data was saved to database
                 //using (var context = new BloggingContext(options))

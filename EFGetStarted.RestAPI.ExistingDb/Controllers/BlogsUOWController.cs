@@ -5,6 +5,7 @@ using EFGetStarted.RestAPI.ExistingDb.Models;
 using EFGetStarted.RestAPI.ExistingDb.DTO;
 using EFGetStarted.RestAPI.ExistingDb.DLL;
 using Microsoft.Extensions.Logging;
+using EFGetStarted.RestAPI.ExistingDb.DtoDLL;
 
 namespace EFGetStarted.RestAPI.ExistingDb.Controllers
 {
@@ -40,9 +41,13 @@ namespace EFGetStarted.RestAPI.ExistingDb.Controllers
 
             if (ModelState.IsValid)
 			{
-				BlogManager blogManager = new BlogManager(this._unitOfWork);
+                BlogDtoDll BlogDtoDll = new BlogDtoDll();
+                BlogDtoDll.Url = BlogDto.Url;
 
-				blog_id = blogManager.AddBlog(BlogDto);
+
+                BlogManager blogManager = new BlogManager(this._unitOfWork);
+
+				blog_id = blogManager.AddBlog(BlogDtoDll);
 			}
 
 			return CreatedAtAction(actionName: "GetBlog", routeValues: new { id = blog_id }, value: null);
