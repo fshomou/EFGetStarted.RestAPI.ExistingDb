@@ -48,18 +48,18 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
             //var blog = repBlog.Single(o=>o.BlogId == BlogId);
 
 
-            var item = repBlog.GetFirstOrDefault(m => m.BlogId == BlogId, include: source => source.Include(m => m.Post));
+            Blog blog = repBlog.GetFirstOrDefault(m => m.BlogId == BlogId, include: source => source.Include(m => m.Post));
 
-            
-            //blogDto.BlogId = blog.BlogId;
-            //blogDto.Url = blog.Url;
+            blogDto.BlogId = blog.BlogId;
+            blogDto.Url = blog.Url;
 
-            //foreach (var item in blog.Post)
-            //{
-            //    PostDto post = new PostDto();
-            //    post.Content = item.Content;
-            //    blogDto.PostDto.Add(post);
-            //}
+
+            foreach (var item in blog.Post)
+            {
+                PostDto post = new PostDto();
+                post.Content = item.Content;
+                blogDto.PostDto.Add(post);
+            }
 
 
 
