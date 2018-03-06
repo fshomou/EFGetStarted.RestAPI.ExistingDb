@@ -9,12 +9,12 @@ namespace EFGetStarted.RestAPI.ExistingDb.DTO
     {
         public BlogDto()
         {
-            //PostDto = new HashSet<PostDto>();
+            PostDto = new HashSet<PostDto>();
         }
 
         public int BlogId { get; set; }
         public string Url { get; set; }
 
-        //public ICollection<PostDto> PostDto { get; set; }
+        public ICollection<PostDto> PostDto { get; set; }
     }
 }

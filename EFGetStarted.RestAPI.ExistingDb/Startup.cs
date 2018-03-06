@@ -6,6 +6,7 @@ using EFGetStarted.RestAPI.ExistingDb.Models;
 using Microsoft.EntityFrameworkCore;
 using EFGetStarted.RestAPI.ExistingDb.Data;
 using EFGetStarted.RestAPI.ExistingDb.UOW;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace EFGetStarted.RestAPI.ExistingDb
 {
@@ -38,6 +39,11 @@ namespace EFGetStarted.RestAPI.ExistingDb
 
             services.AddDbContext<BloggingContext>(options => options.UseSqlServer(connection)).AddUnitOfWork<BloggingContext>();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +62,12 @@ namespace EFGetStarted.RestAPI.ExistingDb
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseSwagger();
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.), specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseMvc();
         }

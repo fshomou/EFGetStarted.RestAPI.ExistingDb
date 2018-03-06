@@ -34,13 +34,20 @@ namespace EFGetStarted.RestAPI.ExistingDb.UOW
 
         }
 
+        //public void Add(T entity)
+
+        //{
+
+        //    _dbSet.Add(entity);
+
+        //}
 
 
-        public void Add(T entity)
+        public T Add(T entity)
 
         {
 
-            this._dbSet.Add(entity);
+            return _dbSet.Add(entity).Entity;
 
         }
 
@@ -114,9 +121,18 @@ namespace EFGetStarted.RestAPI.ExistingDb.UOW
 
         }
 
+        public IQueryable<T> GetAll( params Expression<Func<T, object>>[] includeExpressions)
+        {
+            IQueryable<T> set = this._dbContext.Set<T>();
 
+            foreach (var includeExpression in includeExpressions)
+            {
+                set = set.Include(includeExpression);
+            }
+            return set;
+        }
 
-
+      
 
         public T Single(Expression<Func<T, bool>> predicate = null,
 
@@ -146,15 +162,25 @@ namespace EFGetStarted.RestAPI.ExistingDb.UOW
 
                 return orderBy(query).FirstOrDefault();
 
+            
             return query.FirstOrDefault();
 
         }
 
+        public IList<T> Get<TParamater>(IList<Expression<Func<T, TParamater>>> includeProperties)
+
+        {
+            IQueryable<T> query = this._dbSet;
+            foreach (var include in includeProperties)
+            {
+
+                query = query.Include(include);
+            }
+
+            return query.ToList();
+        }
 
 
-
-
-    
 
 
 
@@ -235,6 +261,127 @@ namespace EFGetStarted.RestAPI.ExistingDb.UOW
 
 
         //}
+
+        //public TResult GetFirstOrDefault<TResult>(Expression<Func<T, TResult>> selector,
+
+        //                                          Expression<Func<T, bool>> predicate = null,
+
+        //                                          Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+
+        //                                          Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+
+        //                                          bool disableTracking = true)
+
+        //{
+
+        //    IQueryable<T> query = _dbSet;
+
+        //    if (disableTracking)
+
+        //    {
+
+        //        query = query.AsNoTracking();
+
+        //    }
+
+
+
+        //    if (include != null)
+
+        //    {
+
+        //        query = include(query);
+
+        //    }
+
+
+
+        //    if (predicate != null)
+
+        //    {
+
+        //        query = query.Where(predicate);
+
+        //    }
+
+
+
+        //    if (orderBy != null)
+
+        //    {
+
+        //        return orderBy(query).Select(selector).FirstOrDefault();
+
+        //    }
+
+        //    else
+
+        //    {
+
+        //        return query.Select(selector).FirstOrDefault();
+
+        //    }
+
+        //}
+        public T GetFirstOrDefault(Expression<Func<T, bool>> predicate = null,
+
+                                         Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+
+                                         Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+
+                                         bool disableTracking = true)
+
+        {
+
+            IQueryable<T> query = _dbSet;
+
+            if (disableTracking)
+
+            {
+
+                query = query.AsNoTracking();
+
+            }
+
+
+
+            if (include != null)
+
+            {
+
+                query = include(query);
+
+            }
+
+
+
+            if (predicate != null)
+
+            {
+
+                query = query.Where(predicate);
+
+            }
+
+
+
+            if (orderBy != null)
+
+            {
+
+                return orderBy(query).FirstOrDefault();
+
+            }
+
+            else
+
+            {
+
+                return query.FirstOrDefault();
+
+            }
+
+        }
 
     }
 }

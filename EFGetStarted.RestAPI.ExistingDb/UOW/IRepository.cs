@@ -20,7 +20,26 @@ namespace EFGetStarted.RestAPI.ExistingDb.UOW
 
             bool disableTracking = true);
 
+        IQueryable<T> GetAll(params Expression<Func<T, object>>[] includeExpressions);
 
+
+        //TResult GetFirstOrDefault<TResult>(Expression<Func<T, TResult>> selector,
+
+        //                                  Expression<Func<T, bool>> predicate = null,
+
+        //                                  Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+
+        //                                  Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+
+        //                                  bool disableTracking = true);
+
+        T GetFirstOrDefault(Expression<Func<T, bool>> predicate = null,
+
+                                 Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+
+                                 Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+
+                                 bool disableTracking = true);
 
         Task<IEnumerable<T>> Get();
 
@@ -28,7 +47,7 @@ namespace EFGetStarted.RestAPI.ExistingDb.UOW
 
      
 
-        void Add(T entity);
+         T Add(T entity);
 
         void Delete(T entity);
 

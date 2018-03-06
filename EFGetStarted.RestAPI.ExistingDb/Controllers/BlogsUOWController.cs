@@ -1,55 +1,67 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using EFGetStarted.RestAPI.ExistingDb.Models;
-using EFGetStarted.RestAPI.ExistingDb.Data;
 using EFGetStarted.RestAPI.ExistingDb.DTO;
 using EFGetStarted.RestAPI.ExistingDb.DLL;
+using Microsoft.Extensions.Logging;
 
 namespace EFGetStarted.RestAPI.ExistingDb.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/BlogsUOW")]
-    public class BlogsUOWController : Controller
-    {
-        private readonly IUnitOfWork _unitOfWork;
+	[Produces("application/json")]
+	[Route("api/BlogsUOW")]
+	public class BlogsUOWController : Controller
+	{
+		private readonly IUnitOfWork _unitOfWork;
+		private ILogger<BlogsUOWController> _logger;
 
-        public BlogsUOWController(IUnitOfWork unitOfWork)
-        {
-            _unitOfWork = unitOfWork;
-        }
+		//public BlogsUOWController(IUnitOfWork unitOfWork, ILogger<BlogsUOWController> logger)
+		//{
+		//	this._unitOfWork = unitOfWork;
+		//	this._logger = logger;
+		//}
 
-        // GET: api/Blogs
-        [HttpGet]
-        public async Task<IEnumerable<Blog>> GetBlogs()
-        {
-            return await this._unitOfWork.GetRepository<Blog>().Get();
-        }
+		public BlogsUOWController(IUnitOfWork unitOfWork)
+		{
+			this._unitOfWork = unitOfWork;
+		}
 
-        [HttpPost]
-        public async Task<IActionResult> PostBlog([FromBody]BlogDto BlogDto)
-        {
+		// GET: api/Blogs
+		[HttpGet]
+		public async Task<IEnumerable<Blog>> GetBlogs()
+		{
+			return await this._unitOfWork.GetRepository<Blog>().Get();
+		}
 
-            if (BlogDto != null)
+		[HttpPost]
+		public IActionResult PostBlog([FromBody]BlogDto BlogDto)
+		{
+            int blog_id = 0;
+
+            if (ModelState.IsValid)
+			{
+				BlogManager blogManager = new BlogManager(this._unitOfWork);
+
+				blog_id = blogManager.AddBlog(BlogDto);
+			}
+
+			return CreatedAtAction(actionName: "GetBlog", routeValues: new { id = blog_id }, value: null);
+
+
+		}
+
+		// GET: api/Blogs/5
+		[HttpGet("{id}")]
+		public IActionResult GetBlog([FromRoute] int id)
+		{
+
+            if (ModelState.IsValid)
             {
-                BlogManager blogManager = new BlogManager(_unitOfWork);
+                BlogManager blogManager = new BlogManager(this._unitOfWork);
 
-                blogManager.AddBlog(BlogDto);
+                return Ok(blogManager.GetBlog(id));
             }
 
-            return CreatedAtAction(actionName: "GetBlog", routeValues: new { id = BlogDto.BlogId }, value: BlogDto);
-
-
-        }
-
-        // GET: api/Blogs/5
-        [HttpGet("{id}")]
-        public IActionResult GetBlog([FromRoute] int id)
-        {
             //if (!ModelState.IsValid)
             //{
             //    return BadRequest(ModelState);
@@ -63,83 +75,83 @@ namespace EFGetStarted.RestAPI.ExistingDb.Controllers
             //}
 
             return Ok();
-        }
+		}
 
-        //// PUT: api/Blogs/5
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutBlog([FromRoute] int id, [FromBody] Blog blog)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+		//// PUT: api/Blogs/5
+		//[HttpPut("{id}")]
+		//public async Task<IActionResult> PutBlog([FromRoute] int id, [FromBody] Blog blog)
+		//{
+		//    if (!ModelState.IsValid)
+		//    {
+		//        return BadRequest(ModelState);
+		//    }
 
-        //    if (id != blog.BlogId)
-        //    {
-        //        return BadRequest();
-        //    }
+		//    if (id != blog.BlogId)
+		//    {
+		//        return BadRequest();
+		//    }
 
-        //    _context.Entry(blog).State = EntityState.Modified;
+		//    _context.Entry(blog).State = EntityState.Modified;
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!BlogExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+		//    try
+		//    {
+		//        await _context.SaveChangesAsync();
+		//    }
+		//    catch (DbUpdateConcurrencyException)
+		//    {
+		//        if (!BlogExists(id))
+		//        {
+		//            return NotFound();
+		//        }
+		//        else
+		//        {
+		//            throw;
+		//        }
+		//    }
 
-        //    return NoContent();
-        //}
+		//    return NoContent();
+		//}
 
-        // POST: api/Blogs
-        //[HttpPost]
-        //public async Task<IActionResult> PostBlog([FromBody] Blog blog)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+		// POST: api/Blogs
+		//[HttpPost]
+		//public async Task<IActionResult> PostBlog([FromBody] Blog blog)
+		//{
+		//    if (!ModelState.IsValid)
+		//    {
+		//        return BadRequest(ModelState);
+		//    }
 
 
-        //    this._unitOfWork.GetRepository<Blog>().Add(blog);
-        //    this._unitOfWork.SaveChanges();
+		//    this._unitOfWork.GetRepository<Blog>().Add(blog);
+		//    this._unitOfWork.SaveChanges();
 
-        //    return  CreatedAtAction(actionName: "GetBlog", routeValues: new { id = blog.BlogId }, value: blog);
-        //}
+		//    return  CreatedAtAction(actionName: "GetBlog", routeValues: new { id = blog.BlogId }, value: blog);
+		//}
 
-        //// DELETE: api/Blogs/5
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteBlog([FromRoute] int id)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return BadRequest(ModelState);
-        //    }
+		//// DELETE: api/Blogs/5
+		//[HttpDelete("{id}")]
+		//public async Task<IActionResult> DeleteBlog([FromRoute] int id)
+		//{
+		//    if (!ModelState.IsValid)
+		//    {
+		//        return BadRequest(ModelState);
+		//    }
 
-        //    var blog = await _context.Blog.SingleOrDefaultAsync(m => m.BlogId == id);
-        //    if (blog == null)
-        //    {
-        //        return NotFound();
-        //    }
+		//    var blog = await _context.Blog.SingleOrDefaultAsync(m => m.BlogId == id);
+		//    if (blog == null)
+		//    {
+		//        return NotFound();
+		//    }
 
-        //    _context.Blog.Remove(blog);
-        //    await _context.SaveChangesAsync();
+		//    _context.Blog.Remove(blog);
+		//    await _context.SaveChangesAsync();
 
-        //    return Ok(blog);
-        //}
+		//    return Ok(blog);
+		//}
 
-        //private bool BlogExists(int id)
-        //{
-        //    return _context.Blog.Any(e => e.BlogId == id);
-        //}
-    }
+		//private bool BlogExists(int id)
+		//{
+		//    return _context.Blog.Any(e => e.BlogId == id);
+		//}
+	}
 }
