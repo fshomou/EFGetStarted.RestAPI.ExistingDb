@@ -25,6 +25,7 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
             foreach (var item in BlogDtoDll.PostDtoDll)   {
                 Post post = new Post();
                 post.Content = item.Content;
+                post.Title = item.Title;
                 blog.Post.Add(post);
             }
 

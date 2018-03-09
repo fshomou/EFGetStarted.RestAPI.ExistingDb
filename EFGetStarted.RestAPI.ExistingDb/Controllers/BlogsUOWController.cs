@@ -44,6 +44,14 @@ namespace EFGetStarted.RestAPI.ExistingDb.Controllers
                 BlogDtoDll BlogDtoDll = new BlogDtoDll();
                 BlogDtoDll.Url = BlogDto.Url;
 
+                foreach (var item in BlogDto.PostDto)
+                {
+                    PostDtoDll post = new PostDtoDll();
+                    post.Content = item.Content;
+                    post.Title = item.Title;
+                    BlogDtoDll.PostDtoDll.Add(post);
+                }
+
 
                 BlogManager blogManager = new BlogManager(this._unitOfWork);
 

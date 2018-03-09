@@ -22,11 +22,5 @@ namespace EFGetStarted.RestAPI.ExistingDb
 
 
 
-    public interface IUnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
-
-    {
-
-        TContext Context { get; }
-
-    }
+   
 }

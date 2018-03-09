@@ -16,7 +16,7 @@ namespace EFGetStarted.RestAPI.ExistingDb.Tests
         [TestMethod]
         public async Task Get_Blogs()
         {
-          
+           // TODO
 
             try
             {
@@ -124,7 +124,7 @@ namespace EFGetStarted.RestAPI.ExistingDb.Tests
         public async Task Add_Blog_And_Post()
         {
 
-
+            //TODO
             try
             {
                 string connection = @"Server=(localdb)\mssqllocaldb;Database=BloggingGeneric;Trusted_Connection=True;ConnectRetryCount=0";
@@ -146,21 +146,20 @@ namespace EFGetStarted.RestAPI.ExistingDb.Tests
                     //IBlogRepositoryGeneric blogsRepository = new BlogRepositoryGenerics(context);
 
                     var uow = new UnitOfWork<DataContext>(context);
-                    var repo = uow.GetRepository<Blog>();
                     var blogsUOWController = new BlogsUOWController(uow);
-                    Blog blog = new Blog();
-                    blog.Url = "test from VS lbog and post";
+                    BlogDto blog = new BlogDto();
+                    blog.Url = "Add_Blog_And_Post";
 
-                    Post post = new Post();
-                    post.Blog = blog;
-                    post.Content = "sdfdsfdsfdsfs";
-                    post.Title = "tititel";
-                    
+                    PostDto post = new PostDto();
+                    post.Content = "Add_Blog_And_Post";
+                    post.Title = "Add_Blog_And_Post";
 
-                    blog.Post.Add(post);
+                    blog.PostDto.Add(post);
 
-                    repo.Add(blog);
-                    uow.SaveChanges();
+
+                    blogsUOWController.PostBlog(blog);
+
+      
 
                   
                 }

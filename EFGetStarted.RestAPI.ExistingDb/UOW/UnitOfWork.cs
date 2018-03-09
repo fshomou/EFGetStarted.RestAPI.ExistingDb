@@ -10,21 +10,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EFGetStarted.RestAPI.ExistingDb
 {
-    public class UnitOfWork<TContext> : IRepositoryFactory, IUnitOfWork<TContext>, IUnitOfWork
-
-       where TContext : DbContext
+    public class UnitOfWork<TContext> : IRepositoryFactory, IUnitOfWork<TContext>, IUnitOfWork where TContext : DbContext
 
     {
 
         private Dictionary<Type, object> _repositories;
-
+        private readonly TContext _context;
 
 
         public UnitOfWork(TContext context)
 
         {
 
-            Context = context ?? throw new ArgumentNullException(nameof(context));
+            _context = context ?? throw new ArgumentNullException(nameof(context));
 
         }
 
@@ -40,7 +38,7 @@ namespace EFGetStarted.RestAPI.ExistingDb
 
             var type = typeof(TEntity);
 
-            if (!_repositories.ContainsKey(type)) _repositories[type] = new Repository<TEntity>(Context);
+            if (!_repositories.ContainsKey(type)) _repositories[type] = new Repository<TEntity>(_context);
 
             return (IRepository<TEntity>)_repositories[type];
 
@@ -48,7 +46,7 @@ namespace EFGetStarted.RestAPI.ExistingDb
 
 
 
-        public TContext Context { get; }
+        public TContext DbContext { get; }
 
 
 
@@ -56,7 +54,7 @@ namespace EFGetStarted.RestAPI.ExistingDb
 
         {
 
-            return Context.SaveChanges();
+            return _context.SaveChanges();
 
         }
 
@@ -66,7 +64,7 @@ namespace EFGetStarted.RestAPI.ExistingDb
 
         {
 
-            Context?.Dispose();
+            _context?.Dispose();
 
         }
 
