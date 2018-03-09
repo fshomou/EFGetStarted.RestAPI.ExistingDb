@@ -1,10 +1,7 @@
 ﻿using EFGetStarted.RestAPI.ExistingDb.Data;
 using EFGetStarted.RestAPI.ExistingDb.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Linq.Expressions;
 
 namespace EFGetStarted.RestAPI.ExistingDb.GenericData
 {
@@ -13,6 +10,7 @@ namespace EFGetStarted.RestAPI.ExistingDb.GenericData
         public BlogRepositoryGenerics(DataContext context) : base(context)
         {
         }
+
         public Blog Get(int blogId)
         {
             var query = GetAll().FirstOrDefault(b => b.BlogId == blogId);

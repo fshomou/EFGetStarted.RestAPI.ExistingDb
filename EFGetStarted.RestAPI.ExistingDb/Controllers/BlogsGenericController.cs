@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using EFGetStarted.RestAPI.ExistingDb.GenericData;
 using EFGetStarted.RestAPI.ExistingDb.Models;
-using EFGetStarted.RestAPI.ExistingDb.Data;
-using EFGetStarted.RestAPI.ExistingDb.GenericData;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EFGetStarted.RestAPI.ExistingDb.Controllers
 {

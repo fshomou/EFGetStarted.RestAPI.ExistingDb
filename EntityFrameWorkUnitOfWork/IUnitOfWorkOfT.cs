@@ -1,14 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EntityFrameWorkUnitOfWork
 {
     public interface IUnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
     {
-
         /// <summary>
 
         /// Gets the db context.
@@ -18,6 +13,5 @@ namespace EntityFrameWorkUnitOfWork
         /// <returns>The instance of type <typeparamref name="TContext"/>.</returns>
 
         TContext DbContext { get; }
-
     }
 }

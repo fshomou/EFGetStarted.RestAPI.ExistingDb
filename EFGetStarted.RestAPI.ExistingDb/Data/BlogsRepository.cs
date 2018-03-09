@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using EFGetStarted.RestAPI.ExistingDb.Models;
+﻿using EFGetStarted.RestAPI.ExistingDb.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EFGetStarted.RestAPI.ExistingDb.Data
 {
     public class BlogsRepository : IBlogRepository
     {
         private readonly BloggingContext _context;
+
         public BlogsRepository(BloggingContext context)
 
         {
-
             _context = context;
-
         }
 
         public void Add(Blog blog)

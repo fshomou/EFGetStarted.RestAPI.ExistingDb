@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace EFGetStarted.RestAPI.ExistingDb.Models
+﻿namespace EFGetStarted.RestAPI.ExistingDb.Models
 {
     public partial class Comment
     {

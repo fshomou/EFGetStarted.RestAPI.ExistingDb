@@ -1,8 +1,6 @@
 ﻿using EFGetStarted.RestAPI.ExistingDb.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,11 +9,12 @@ namespace EFGetStarted.RestAPI.ExistingDb.GenericData
 {
     public class DataContext : DbContext
     {
-
         public DbSet<Blog> Blog { get; set; }
         public DbSet<Post> Post { get; set; }
 
-        public DataContext(DbContextOptions<DataContext> options) : base(options) { }
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
+        {
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -30,6 +29,7 @@ namespace EFGetStarted.RestAPI.ExistingDb.GenericData
         {
             base.SaveChanges();
         }
+
         public string UserProvider
         {
             get
@@ -42,6 +42,7 @@ namespace EFGetStarted.RestAPI.ExistingDb.GenericData
 
         public Func<DateTime> TimestampProvider { get; set; } = ()
             => DateTime.UtcNow;
+
         public override int SaveChanges()
         {
             //TrackChanges();
@@ -63,7 +64,7 @@ namespace EFGetStarted.RestAPI.ExistingDb.GenericData
         //            var auditable = entry.Entity as IAuditable;
         //            if (entry.State == EntityState.Added)
         //            {
-        //                auditable.CreatedBy = UserProvider;//  
+        //                auditable.CreatedBy = UserProvider;//
         //                auditable.CreatedOn = TimestampProvider();
         //                auditable.UpdatedOn = TimestampProvider();
         //            }
@@ -75,7 +76,5 @@ namespace EFGetStarted.RestAPI.ExistingDb.GenericData
         //        }
         //    }
         //}
-
-
     }
 }

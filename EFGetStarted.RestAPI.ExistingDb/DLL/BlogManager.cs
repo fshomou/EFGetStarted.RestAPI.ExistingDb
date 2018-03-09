@@ -1,18 +1,14 @@
-﻿using EFGetStarted.RestAPI.ExistingDb.DTO;
-using EFGetStarted.RestAPI.ExistingDb.DtoDLL;
+﻿using EFGetStarted.RestAPI.ExistingDb.DtoDLL;
 using EFGetStarted.RestAPI.ExistingDb.Models;
 using EntityFrameWorkUnitOfWork;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace EFGetStarted.RestAPI.ExistingDb.DLL
 {
     public class BlogManager
     {
         private readonly IUnitOfWork _unitOfWork;
+
         public BlogManager(IUnitOfWork unitOfWork)
         {
             this._unitOfWork = unitOfWork;
@@ -23,14 +19,13 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
             Blog blog = new Blog();
             blog.Url = BlogDtoDll.Url;
 
-            foreach (var item in BlogDtoDll.PostDtoDll)   {
+            foreach (var item in BlogDtoDll.PostDtoDll)
+            {
                 Post post = new Post();
                 post.Content = item.Content;
                 post.Title = item.Title;
                 blog.Post.Add(post);
             }
-
-
 
             // We can write one line of code if you like =>_unitOfWork.GetRepository<Blog>().Add(blog);
             IRepository<Blog> repBlog = this._unitOfWork.GetRepository<Blog>();
@@ -38,7 +33,6 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
 
             this._unitOfWork.SaveChanges();
             return blog.BlogId;
-
         }
 
         public BlogDtoDll GetBlog(int BlogId)
@@ -47,15 +41,12 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
             // We can write one line of code if you like =>_unitOfWork.GetRepository<Blog>().Add(blog);
             IRepository<Blog> repBlog = this._unitOfWork.GetRepository<Blog>();
 
-
             //var blog = repBlog.Single(o=>o.BlogId == BlogId);
-
 
             Blog blog = repBlog.GetFirstOrDefault(m => m.BlogId == BlogId, include: source => source.Include(m => m.Post));
 
             BlogDtoDll.BlogId = blog.BlogId;
             BlogDtoDll.Url = blog.Url;
-
 
             foreach (var item in blog.Post)
             {
@@ -64,11 +55,7 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
                 BlogDtoDll.PostDtoDll.Add(post);
             }
 
-
-
             return BlogDtoDll;
-
         }
-
     }
 }

@@ -1,5 +1,4 @@
 ﻿using EFGetStarted.RestAPI.ExistingDb.GenericData;
-using EFGetStarted.RestAPI.ExistingDb.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -25,7 +24,6 @@ namespace EFGetStarted.RestAPI.ExistingDb.Data
 
         public virtual async Task<ICollection<T>> GetAllAsyn()
         {
-
             return await _context.Set<T>().ToListAsync();
         }
 
@@ -41,7 +39,6 @@ namespace EFGetStarted.RestAPI.ExistingDb.Data
 
         public virtual T Add(T t)
         {
-
             _context.Set<T>().Add(t);
             _context.SaveChanges();
             return t;
@@ -52,7 +49,6 @@ namespace EFGetStarted.RestAPI.ExistingDb.Data
             _context.Set<T>().Add(t);
             await _context.SaveChangesAsync();
             return t;
-
         }
 
         public virtual T Find(Expression<Func<T, bool>> match)
@@ -125,7 +121,6 @@ namespace EFGetStarted.RestAPI.ExistingDb.Data
 
         public virtual void Save()
         {
-
             _context.SaveChanges();
         }
 
@@ -147,11 +142,9 @@ namespace EFGetStarted.RestAPI.ExistingDb.Data
 
         public IQueryable<T> GetAllIncluding(params Expression<Func<T, object>>[] includeProperties)
         {
-
             IQueryable<T> queryable = GetAll();
             foreach (Expression<Func<T, object>> includeProperty in includeProperties)
             {
-
                 queryable = queryable.Include<T, object>(includeProperty);
             }
 
@@ -159,6 +152,7 @@ namespace EFGetStarted.RestAPI.ExistingDb.Data
         }
 
         private bool disposed = false;
+
         protected virtual void Dispose(bool disposing)
         {
             if (!this.disposed)

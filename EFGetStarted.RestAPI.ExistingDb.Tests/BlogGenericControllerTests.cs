@@ -1,11 +1,9 @@
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.EntityFrameworkCore;
-using EFGetStarted.RestAPI.ExistingDb.Models;
 using EFGetStarted.RestAPI.ExistingDb.Controllers;
-using System.Threading.Tasks;
-using EFGetStarted.RestAPI.ExistingDb.Data;
-using System;
 using EFGetStarted.RestAPI.ExistingDb.GenericData;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Threading.Tasks;
 
 namespace EFGetStarted.RestAPI.ExistingDb.Tests
 {
@@ -15,15 +13,12 @@ namespace EFGetStarted.RestAPI.ExistingDb.Tests
         [TestMethod]
         public async Task Add_writes_to_database()
         {
-          
-
             try
             {
                 string connection = @"Server=(localdb)\mssqllocaldb;Database=BloggingGeneric;Trusted_Connection=True;ConnectRetryCount=0";
                 var options = new DbContextOptionsBuilder<DataContext>()
                .UseSqlServer(connection)
                .Options;
-
 
                 //// Create the schema in the database
                 //using (var context = new BloggingContext(options))
@@ -47,18 +42,12 @@ namespace EFGetStarted.RestAPI.ExistingDb.Tests
                 //    Assert.AreEqual("http://sample.com", context.Blogs.Single().Url);
                 //}
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-
-
             }
-
             finally
             {
-                
             }
         }
-
-
     }
 }

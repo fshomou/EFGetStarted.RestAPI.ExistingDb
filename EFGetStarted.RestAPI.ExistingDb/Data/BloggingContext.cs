@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace EFGetStarted.RestAPI.ExistingDb.Models
 {
@@ -44,7 +42,6 @@ namespace EFGetStarted.RestAPI.ExistingDb.Models
                     .WithMany(p => p.Post)
                     .HasForeignKey(d => d.BlogId);
             });
-
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 
 namespace EntityFrameWorkUnitOfWork
 {
@@ -7,14 +6,8 @@ namespace EntityFrameWorkUnitOfWork
     public interface IUnitOfWork : IDisposable
 
     {
-
         IRepository<TEntity> GetRepository<TEntity>() where TEntity : class;
 
         int SaveChanges();
-
     }
-
-
-
-   
 }
