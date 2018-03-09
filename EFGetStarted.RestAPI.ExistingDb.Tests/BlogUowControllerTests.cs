@@ -7,6 +7,7 @@ using EFGetStarted.RestAPI.ExistingDb.Data;
 using System;
 using EFGetStarted.RestAPI.ExistingDb.GenericData;
 using EFGetStarted.RestAPI.ExistingDb.DTO;
+using EntityFrameWorkUnitOfWork;
 
 namespace EFGetStarted.RestAPI.ExistingDb.Tests
 {

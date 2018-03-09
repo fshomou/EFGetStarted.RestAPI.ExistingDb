@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EFGetStarted.RestAPI.ExistingDb.UOW
+namespace EntityFrameWorkUnitOfWork
 {
     public interface IUnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
     {

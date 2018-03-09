@@ -1,11 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace EFGetStarted.RestAPI.ExistingDb.UOW
+namespace EntityFrameWorkUnitOfWork
 {
     //https://github.com/threenine/Threenine.Data/blob/master/src/Repository.cs
     public static class UnitOfWorkServiceCollectionExtentions

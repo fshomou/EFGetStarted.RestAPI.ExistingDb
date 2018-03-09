@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using EFGetStarted.RestAPI.ExistingDb.Models;
 using Microsoft.EntityFrameworkCore;
 using EFGetStarted.RestAPI.ExistingDb.Data;
-using EFGetStarted.RestAPI.ExistingDb.UOW;
+using EntityFrameWorkUnitOfWork;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace EFGetStarted.RestAPI.ExistingDb

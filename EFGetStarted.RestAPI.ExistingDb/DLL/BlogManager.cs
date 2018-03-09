@@ -1,6 +1,7 @@
 ﻿using EFGetStarted.RestAPI.ExistingDb.DTO;
 using EFGetStarted.RestAPI.ExistingDb.DtoDLL;
 using EFGetStarted.RestAPI.ExistingDb.Models;
+using EntityFrameWorkUnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
 
 
             // We can write one line of code if you like =>_unitOfWork.GetRepository<Blog>().Add(blog);
-            UOW.IRepository<Blog> repBlog = this._unitOfWork.GetRepository<Blog>();
+            IRepository<Blog> repBlog = this._unitOfWork.GetRepository<Blog>();
             blog = repBlog.Add(blog);
 
             this._unitOfWork.SaveChanges();
@@ -44,7 +45,7 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
         {
             BlogDtoDll BlogDtoDll = new BlogDtoDll();
             // We can write one line of code if you like =>_unitOfWork.GetRepository<Blog>().Add(blog);
-            UOW.IRepository<Blog> repBlog = this._unitOfWork.GetRepository<Blog>();
+            IRepository<Blog> repBlog = this._unitOfWork.GetRepository<Blog>();
 
 
             //var blog = repBlog.Single(o=>o.BlogId == BlogId);

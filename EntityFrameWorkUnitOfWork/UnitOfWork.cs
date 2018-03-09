@@ -2,13 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using EFGetStarted.RestAPI.ExistingDb.Data;
-using EFGetStarted.RestAPI.ExistingDb.Models;
-using EFGetStarted.RestAPI.ExistingDb.GenericData;
-using EFGetStarted.RestAPI.ExistingDb.UOW;
 using Microsoft.EntityFrameworkCore;
 
-namespace EFGetStarted.RestAPI.ExistingDb
+namespace EntityFrameWorkUnitOfWork
 {
     public class UnitOfWork<TContext> : IRepositoryFactory, IUnitOfWork<TContext>, IUnitOfWork where TContext : DbContext
 

@@ -6,9 +6,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
-using EFGetStarted.RestAPI.ExistingDb.Models;
 
-namespace EFGetStarted.RestAPI.ExistingDb.UOW
+namespace EntityFrameWorkUnitOfWork
 {
     public class Repository<T> : IRepository<T> where T : class
 
