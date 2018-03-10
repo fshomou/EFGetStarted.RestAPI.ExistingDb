@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EntityFrameWorkUnitOfWork
@@ -25,9 +26,13 @@ namespace EntityFrameWorkUnitOfWork
 
         Task<IEnumerable<T>> Get();
 
-        IEnumerable<T> Get(Expression<Func<T, bool>> predicate);
+        IEnumerable<T> GetAll();
 
-        IQueryable<T> GetAll(params Expression<Func<T, object>>[] includeExpressions);
+        IEnumerable<T> GetAll(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeExpressions);
+
+        IQueryable<T> GetAll(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+
+                                                           Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, params Expression<Func<T, object>>[] includeExpressions);
 
         T GetFirstOrDefault(Expression<Func<T, bool>> predicate = null,
                                  Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
@@ -58,5 +63,30 @@ namespace EntityFrameWorkUnitOfWork
         void Update(params T[] entities);
 
         void Update(IEnumerable<T> entities);
+
+        IPagedList<T> GetPagedList(Expression<Func<T, bool>> predicate = null,
+                                      Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+                                      Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+                                      int pageIndex = 0,
+                                      int pageSize = 20,
+                                      bool disableTracking = true);
+
+        Task<IPagedList<T>> GetPagedListAsync(Expression<Func<T, bool>> predicate = null,
+                                                   Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+                                                   Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+                                                   int pageIndex = 0,
+                                                   int pageSize = 20,
+                                                   bool disableTracking = true,
+                                                   CancellationToken cancellationToken = default(CancellationToken));
+
+        Task<IPagedList<TResult>> GetPagedListAsync<TResult>(Expression<Func<T, TResult>> selector,
+                                                            Expression<Func<T, bool>> predicate = null,
+                                                            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+                                                            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+                                                            int pageIndex = 0,
+                                                            int pageSize = 20,
+                                                            bool disableTracking = true,
+                                                            CancellationToken cancellationToken = default(CancellationToken)) where TResult : class;
+
     }
 }

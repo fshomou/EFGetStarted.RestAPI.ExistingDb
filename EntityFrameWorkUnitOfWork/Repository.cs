@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace EntityFrameWorkUnitOfWork
@@ -30,6 +31,13 @@ namespace EntityFrameWorkUnitOfWork
         //    _dbSet.Add(entity);
 
         //}
+
+        public IEnumerable<T> GetAll()
+        {
+            //return _dbSet.Include("Post.Comment");
+            return _dbSet.Include("Post");
+            //return _dbSet;
+        }
 
         public T Add(T entity)
 
@@ -84,7 +92,9 @@ namespace EntityFrameWorkUnitOfWork
             this._dbSet.RemoveRange(entities);
         }
 
-        public IQueryable<T> GetAll(params Expression<Func<T, object>>[] includeExpressions)
+        public IQueryable<T> GetAll(Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+
+                                                           Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, params Expression<Func<T, object>>[] includeExpressions)
         {
             IQueryable<T> set = this._dbContext.Set<T>();
 
@@ -131,7 +141,7 @@ namespace EntityFrameWorkUnitOfWork
             return query.ToList();
         }
 
-        public IEnumerable<T> Get(Expression<Func<T, bool>> predicate)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeExpressions)
 
         {
             return this._dbSet.Where(predicate).AsEnumerable();
@@ -273,5 +283,300 @@ namespace EntityFrameWorkUnitOfWork
                 return query.FirstOrDefault();
             }
         }
+
+        public IPagedList<T> GetPagedList(Expression<Func<T, bool>> predicate = null,
+
+                                                Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+
+                                                Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+
+                                                int pageIndex = 0,
+
+                                                int pageSize = 20,
+
+                                                bool disableTracking = true)
+
+        {
+
+            IQueryable<T> query = _dbSet;
+
+            if (disableTracking)
+
+            {
+
+                query = query.AsNoTracking();
+
+            }
+
+
+
+            if (include != null)
+
+            {
+
+                query = include(query);
+
+            }
+
+
+
+            if (predicate != null)
+
+            {
+
+                query = query.Where(predicate);
+
+            }
+
+
+
+            if (orderBy != null)
+
+            {
+
+                return orderBy(query).ToPagedList(pageIndex, pageSize);
+
+            }
+
+            else
+
+            {
+
+                return query.ToPagedList(pageIndex, pageSize);
+
+            }
+
+        }
+
+        public Task<IPagedList<T>> GetPagedListAsync(Expression<Func<T, bool>> predicate = null,
+
+                                                           Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+
+                                                           Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+
+                                                           int pageIndex = 0,
+
+                                                           int pageSize = 20,
+
+                                                           bool disableTracking = true,
+
+                                                           CancellationToken cancellationToken = default(CancellationToken))
+
+        {
+
+            IQueryable<T> query = _dbSet;
+
+            if (disableTracking)
+
+            {
+
+                query = query.AsNoTracking();
+
+            }
+
+
+
+            if (include != null)
+
+            {
+
+                query = include(query);
+
+            }
+
+
+
+            if (predicate != null)
+
+            {
+
+                query = query.Where(predicate);
+
+            }
+
+
+
+            if (orderBy != null)
+
+            {
+
+                return orderBy(query).ToPagedListAsync(pageIndex, pageSize, 0, cancellationToken);
+
+            }
+
+            else
+
+            {
+
+                return query.ToPagedListAsync(pageIndex, pageSize, 0, cancellationToken);
+
+            }
+
+        }
+
+
+
+        /// <summary>
+
+        /// Gets the <see cref="IPagedList{TResult}"/> based on a predicate, orderby delegate and page information. This method default no-tracking query.
+
+        /// </summary>
+
+        /// <param name="selector">The selector for projection.</param>
+
+        /// <param name="predicate">A function to test each element for a condition.</param>
+
+        /// <param name="orderBy">A function to order elements.</param>
+
+        /// <param name="include">A function to include navigation properties</param>
+
+        /// <param name="pageIndex">The index of page.</param>
+
+        /// <param name="pageSize">The size of the page.</param>
+
+        /// <param name="disableTracking"><c>True</c> to disable changing tracking; otherwise, <c>false</c>. Default to <c>true</c>.</param>
+
+        /// <returns>An <see cref="IPagedList{TResult}"/> that contains elements that satisfy the condition specified by <paramref name="predicate"/>.</returns>
+
+        /// <remarks>This method default no-tracking query.</remarks>
+
+        public IPagedList<TResult> GetPagedList<TResult>(Expression<Func<T, TResult>> selector,
+
+                                                         Expression<Func<T, bool>> predicate = null,
+
+                                                         Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+
+                                                         Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+
+                                                         int pageIndex = 0,
+
+                                                         int pageSize = 20,
+
+                                                         bool disableTracking = true)
+
+            where TResult : class
+
+        {
+
+            IQueryable<T> query = _dbSet;
+
+            if (disableTracking)
+
+            {
+
+                query = query.AsNoTracking();
+
+            }
+
+
+
+            if (include != null)
+
+            {
+
+                query = include(query);
+
+            }
+
+
+
+            if (predicate != null)
+
+            {
+
+                query = query.Where(predicate);
+
+            }
+
+
+
+            if (orderBy != null)
+
+            {
+
+                return orderBy(query).Select(selector).ToPagedList(pageIndex, pageSize);
+
+            }
+
+            else
+
+            {
+
+                return query.Select(selector).ToPagedList(pageIndex, pageSize);
+
+            }
+
+        }
+
+        public Task<IPagedList<TResult>> GetPagedListAsync<TResult>(Expression<Func<T, TResult>> selector,
+
+                                                                    Expression<Func<T, bool>> predicate = null,
+
+                                                                    Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+
+                                                                    Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+
+                                                                    int pageIndex = 0,
+
+                                                                    int pageSize = 20,
+
+                                                                    bool disableTracking = true,
+
+                                                                    CancellationToken cancellationToken = default(CancellationToken))
+
+            where TResult : class
+
+        {
+
+            IQueryable<T> query = _dbSet;
+
+            if (disableTracking)
+
+            {
+
+                query = query.AsNoTracking();
+
+            }
+
+
+
+            if (include != null)
+
+            {
+
+                query = include(query);
+
+            }
+
+
+
+            if (predicate != null)
+
+            {
+
+                query = query.Where(predicate);
+
+            }
+
+
+
+            if (orderBy != null)
+
+            {
+
+                return orderBy(query).Select(selector).ToPagedListAsync(pageIndex, pageSize, 0, cancellationToken);
+
+            }
+
+            else
+
+            {
+
+                return query.Select(selector).ToPagedListAsync(pageIndex, pageSize, 0, cancellationToken);
+
+            }
+
+        }
+
     }
 }

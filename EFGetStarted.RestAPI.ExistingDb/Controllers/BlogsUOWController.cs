@@ -5,6 +5,7 @@ using EFGetStarted.RestAPI.ExistingDb.Models;
 using EntityFrameWorkUnitOfWork;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -30,9 +31,40 @@ namespace EFGetStarted.RestAPI.ExistingDb.Controllers
 
         // GET: api/Blogs
         [HttpGet]
-        public async Task<IEnumerable<Blog>> GetBlogs()
+        public List<BlogDto>  GetAllBlogs()
         {
-            return await this._unitOfWork.GetRepository<Blog>().Get();
+            BlogManager blogManager = new BlogManager(this._unitOfWork);
+
+            List<BlogDto> blogDtolsit = new List<BlogDto>();
+            var bloglist = blogManager.GetBlogAll();
+            foreach (BlogDtoDll blog in bloglist)
+            {
+                BlogDto blogDto = new BlogDto
+                {
+                    BlogId = blog.BlogId,
+                    Url = blog.Url
+                };
+
+                List<PostDto> postDtolist = new List<PostDto>();
+
+                foreach (var post in blog.PostDtoDll)
+                {
+                    PostDto postDto = new PostDto
+                    {
+                        BlogId = post.BlogId,
+                        Content = post.Content,
+                        Title = post.Title,
+                        PostId = post.PostId
+                    };
+                    postDtolist.Add(postDto);
+                }
+                blogDto.PostDto = postDtolist;
+                blogDtolsit.Add(blogDto);
+
+            }
+
+            return blogDtolsit;
+     
         }
 
         [HttpPost]
