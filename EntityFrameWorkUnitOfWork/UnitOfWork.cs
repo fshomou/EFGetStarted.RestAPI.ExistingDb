@@ -33,7 +33,16 @@ namespace EntityFrameWorkUnitOfWork
         public int SaveChanges()
 
         {
-            return _context.SaveChanges();
+            
+            try
+            {
+                // Attempt to save changes to the database
+                return _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return 0;
+            }
         }
 
         public void Dispose()

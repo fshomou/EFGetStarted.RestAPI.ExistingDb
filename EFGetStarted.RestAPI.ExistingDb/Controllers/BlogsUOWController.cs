@@ -119,6 +119,39 @@ namespace EFGetStarted.RestAPI.ExistingDb.Controllers
             return Ok();
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult DeleteBlog([FromRoute] int id)
+        {
+            if (ModelState.IsValid)
+            {
+                BlogManager blogManager = new BlogManager(this._unitOfWork);
+
+                if (blogManager.DeleteBlog(id) != 0)
+                {
+                    return StatusCode(204);
+                }
+                else
+                {
+                    return StatusCode(501);
+                }
+                
+            }
+
+            //if (!ModelState.IsValid)
+            //{
+            //    return BadRequest(ModelState);
+            //}
+            //var blog = await this._unitOfWork.GetRepository<Blog>().Single(m => m.BlogId == id);
+            ////var blog = await _context.Blog.SingleOrDefaultAsync(m => m.BlogId == id);
+
+            //if (blog == null)
+            //{
+            //    return NotFound();
+            //}
+
+            return Ok();
+        }
+
         //// PUT: api/Blogs/5
         //[HttpPut("{id}")]
         //public async Task<IActionResult> PutBlog([FromRoute] int id, [FromBody] Blog blog)

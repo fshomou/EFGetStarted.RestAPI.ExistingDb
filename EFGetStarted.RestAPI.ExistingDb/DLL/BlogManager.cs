@@ -17,6 +17,15 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
             this._unitOfWork = unitOfWork;
         }
 
+        public int DeleteBlog(int BlogId)
+        {
+            IRepository<Blog> repBlog = this._unitOfWork.GetRepository<Blog>();
+            repBlog.Delete(BlogId);
+
+            return this._unitOfWork.SaveChanges();
+        }
+
+
         public int AddBlog(BlogDtoDll BlogDtoDll)
         {
             Blog blog = new Blog();

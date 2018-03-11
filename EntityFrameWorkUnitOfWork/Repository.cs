@@ -48,9 +48,9 @@ namespace EntityFrameWorkUnitOfWork
         public void Delete(T entity)
 
         {
-            var existing = this._dbSet.Find(entity);
+            //var existing = this._dbSet.Find(entity);
 
-            if (existing != null) this._dbSet.Remove(existing);
+            this._dbSet.Remove(entity);
         }
 
         public void Delete(object id)
