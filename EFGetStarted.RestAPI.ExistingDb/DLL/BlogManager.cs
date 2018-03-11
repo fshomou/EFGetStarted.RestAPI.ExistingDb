@@ -49,22 +49,27 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
 
         public BlogDtoDll GetBlog(int BlogId)
         {
-            BlogDtoDll BlogDtoDll = new BlogDtoDll();
+          
             // We can write one line of code if you like =>_unitOfWork.GetRepository<Blog>().Add(blog);
             IRepository<Blog> repBlog = this._unitOfWork.GetRepository<Blog>();
-
+            BlogDtoDll BlogDtoDll = null;
             //var blog = repBlog.Single(o=>o.BlogId == BlogId);
 
             Blog blog = repBlog.GetFirstOrDefault(m => m.BlogId == BlogId, include: source => source.Include(m => m.Post).ThenInclude(post => post.Comment));
 
-            BlogDtoDll.BlogId = blog.BlogId;
-            BlogDtoDll.Url = blog.Url;
-
-            foreach (var item in blog.Post)
+            if (blog != null)
             {
-                PostDtoDll post = new PostDtoDll();
-                post.Content = item.Content;
-                BlogDtoDll.PostDtoDll.Add(post);
+                BlogDtoDll = new BlogDtoDll();
+                BlogDtoDll.BlogId = blog.BlogId;
+                BlogDtoDll.Url = blog.Url;
+
+                foreach (var item in blog.Post)
+                {
+                    PostDtoDll post = new PostDtoDll();
+                    post.Content = item.Content;
+                    post.Title = item.Title;
+                    BlogDtoDll.PostDtoDll.Add(post);
+                }
             }
 
             return BlogDtoDll;
@@ -77,7 +82,9 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
             IRepository<Blog> repBlog = this._unitOfWork.GetRepository<Blog>();
 
             //var blog = repBlog.Single(o=>o.BlogId == BlogId);
+
             Task<IPagedList<Blog>> bloglist = repBlog.GetPagedListAsync(include: source => source.Include(blog => blog.Post).ThenInclude(post => post.Comment));
+            
 
             return bloglist;
         }

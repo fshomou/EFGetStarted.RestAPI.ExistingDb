@@ -101,8 +101,15 @@ namespace EFGetStarted.RestAPI.ExistingDb.Controllers
             {
                 BlogManager blogManager = new BlogManager(this._unitOfWork);
 
-                return Ok(blogManager.GetBlog(id));
+                if (blogManager.GetBlog(id) != null) return Ok(blogManager.GetBlog(id));
+                return StatusCode(404);
             }
+            else
+            {
+                return StatusCode(400);
+            }
+
+
 
             //if (!ModelState.IsValid)
             //{
@@ -116,7 +123,6 @@ namespace EFGetStarted.RestAPI.ExistingDb.Controllers
             //    return NotFound();
             //}
 
-            return Ok();
         }
 
         [HttpDelete("{id}")]
