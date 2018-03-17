@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFGetStarted.RestAPI.Existi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFGetStarted.RestAPI.ExistingDb.Tests", "EFGetStarted.RestAPI.ExistingDb.Tests\EFGetStarted.RestAPI.ExistingDb.Tests.csproj", "{F13F9692-D9D5-4F22-BBDA-51C8C84076AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityFrameWorkUnitOfWork", "EntityFrameWorkUnitOfWork\EntityFrameWorkUnitOfWork.csproj", "{086E2744-674D-40DF-98F9-1A2713A51384}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityFrameWorkUnitOfWork", "EntityFrameWorkUnitOfWork\EntityFrameWorkUnitOfWork.csproj", "{086E2744-674D-40DF-98F9-1A2713A51384}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

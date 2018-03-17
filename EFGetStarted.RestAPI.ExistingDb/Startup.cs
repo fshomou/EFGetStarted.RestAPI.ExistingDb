@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace EFGetStarted.RestAPI.ExistingDb
@@ -31,7 +32,7 @@ namespace EFGetStarted.RestAPI.ExistingDb
             //services.AddDbContext<DataContext>(options => options.UseSqlServer(connection));
             //services.AddTransient<IBlogRepositoryGeneric, EFGetStarted.RestAPI.ExistingDb.GenericData.BlogRepositoryGenerics>();
 
-            services.AddDbContext<BloggingContext>(options => options.UseSqlServer(connection)).AddUnitOfWork<BloggingContext>();
+            services.AddDbContextPool<BloggingContext>(options => options.UseSqlServer(connection)).AddUnitOfWork<BloggingContext>();
 
             services.AddSwaggerGen(c =>
             {
@@ -40,7 +41,7 @@ namespace EFGetStarted.RestAPI.ExistingDb
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
 
@@ -58,6 +59,10 @@ namespace EFGetStarted.RestAPI.ExistingDb
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+
+            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+   
+            loggerFactory.AddDebug();
 
             app.UseMvc();
         }

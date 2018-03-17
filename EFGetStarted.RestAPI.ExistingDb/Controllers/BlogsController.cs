@@ -1,6 +1,7 @@
 ﻿using EFGetStarted.RestAPI.ExistingDb.Data;
 using EFGetStarted.RestAPI.ExistingDb.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,16 +12,21 @@ namespace EFGetStarted.RestAPI.ExistingDb.Controllers
     public class BlogsController : Controller
     {
         private readonly IBlogRepository _BlogsRepository;
+        private readonly ILogger _logger;
 
-        public BlogsController(IBlogRepository blogsRepository)
+        public BlogsController(IBlogRepository blogsRepository, ILogger<BlogsController> logger)
         {
             _BlogsRepository = blogsRepository;
+            _logger = logger;
+
         }
 
         // GET: api/Blogs
         [HttpGet]
         public async Task<IEnumerable<Blog>> GetBlogs()
         {
+            _logger.LogInformation("GetBlogs");
+
             return await this._BlogsRepository.GetAll();
         }
 
