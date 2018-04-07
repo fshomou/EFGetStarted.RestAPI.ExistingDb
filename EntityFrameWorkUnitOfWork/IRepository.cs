@@ -24,6 +24,8 @@ namespace EntityFrameWorkUnitOfWork
 
         void Delete(IEnumerable<T> entities);
 
+        IQueryable<T> Query();
+
         Task<IEnumerable<T>> Get();
 
         IEnumerable<T> GetAll();
@@ -34,20 +36,20 @@ namespace EntityFrameWorkUnitOfWork
 
                                                            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null, params Expression<Func<T, object>>[] includeExpressions);
 
-        T GetFirstOrDefault(Expression<Func<T, bool>> predicate = null,
-                                 Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+        //T GetFirstOrDefault(Expression<Func<T, bool>> predicate = null,
+        //                         Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
 
-                                 Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+        //                         Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
 
-                                 bool disableTracking = true);
+        //                         bool disableTracking = true);
 
-        T Single(Expression<Func<T, bool>> predicate = null,
+        //T Single(Expression<Func<T, bool>> predicate = null,
 
-                                 Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+        //                         Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
 
-            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+        //    Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
 
-            bool disableTracking = true);
+        //    bool disableTracking = true);
 
         //TResult GetFirstOrDefault<TResult>(Expression<Func<T, TResult>> selector,
 

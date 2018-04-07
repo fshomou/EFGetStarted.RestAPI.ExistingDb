@@ -101,7 +101,29 @@ namespace EFGetStarted.RestAPI.ExistingDb.Controllers
             {
                 BlogManager blogManager = new BlogManager(this._unitOfWork);
 
-                if (blogManager.GetBlog(id) != null) return Ok(blogManager.GetBlog(id));
+                BlogDtoDll blogDtoDll = blogManager.GetBlog(id);
+                BlogDto blogDto = new BlogDto
+                {
+                    BlogId = blogDtoDll.BlogId,
+                    Url = blogDtoDll.Url
+                };
+
+                List<PostDto> postDtolist = new List<PostDto>();
+
+                foreach (var post in blogDtoDll.PostDtoDll)
+                {
+                    PostDto postDto = new PostDto
+                    {
+                        BlogId = post.BlogId,
+                        Content = post.Content,
+                        Title = post.Title,
+                        PostId = post.PostId
+                    };
+                    postDtolist.Add(postDto);
+                }
+                blogDto.PostDto = postDtolist;
+
+                if (blogDto != null) return Ok(blogDto);
                 return StatusCode(404);
             }
             else

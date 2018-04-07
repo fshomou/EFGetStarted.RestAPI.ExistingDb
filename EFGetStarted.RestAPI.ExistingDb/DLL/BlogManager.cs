@@ -19,7 +19,9 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
 
         public int DeleteBlog(int BlogId)
         {
+            
             IRepository<Blog> repBlog = this._unitOfWork.GetRepository<Blog>();
+            
             repBlog.Delete(BlogId);
 
             return this._unitOfWork.SaveChanges();
@@ -55,7 +57,9 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
             BlogDtoDll BlogDtoDll = null;
             //var blog = repBlog.Single(o=>o.BlogId == BlogId);
 
-            Blog blog = repBlog.GetFirstOrDefault(m => m.BlogId == BlogId, include: source => source.Include(m => m.Post).ThenInclude(post => post.Comment));
+            //Blog blog = repBlog.Single(m => m.BlogId == BlogId, include: source => source.Include(m => m.Post).ThenInclude(post => post.Comment));
+
+            Blog blog = repBlog.Query().Include(blogt => blogt.Post).ThenInclude(post => post.Comment).Single(m => m.BlogId == BlogId);
 
             if (blog != null)
             {
@@ -80,6 +84,7 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
       
             // We can write one line of code if you like =>_unitOfWork.GetRepository<Blog>().Add(blog);
             IRepository<Blog> repBlog = this._unitOfWork.GetRepository<Blog>();
+            
 
             //var blog = repBlog.Single(o=>o.BlogId == BlogId);
 
@@ -91,14 +96,16 @@ namespace EFGetStarted.RestAPI.ExistingDb.DLL
 
         public IEnumerable<BlogDtoDll> GetBlogAll()
         {
-
             // We can write one line of code if you like =>_unitOfWork.GetRepository<Blog>().Add(blog);
             IRepository<Blog> repBlog = this._unitOfWork.GetRepository<Blog>();
 
             List<BlogDtoDll> blogDtolsit = new List<BlogDtoDll>();
 
             //var blog = rerepBlogpBlog.Single(o=>o.BlogId == BlogId);
-            IEnumerable<Blog> bloglist = repBlog.GetAll(include: source => source.Include(blog => blog.Post).ThenInclude(post => post.Comment));
+            //IEnumerable<Blog> bloglist = repBlog.GetAll(include: source => source.Include(blog => blog.Post).ThenInclude(post => post.Comment));
+            //IEnumerable<Blog> bloglist = repBlog.Query();
+            IEnumerable<Blog> bloglist = repBlog.Query().Include(blog => blog.Post).ThenInclude(post => post.Comment);
+
 
 
             foreach (Blog blog in bloglist)

@@ -105,29 +105,29 @@ namespace EntityFrameWorkUnitOfWork
             return set;
         }
 
-        public T Single(Expression<Func<T, bool>> predicate = null,
+        //public T Single(Expression<Func<T, bool>> predicate = null,
 
-            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+        //    Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
 
-            Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+        //    Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
 
-            bool disableTracking = true)
+        //    bool disableTracking = true)
 
-        {
-            IQueryable<T> query = this._dbSet;
+        //{
+        //    IQueryable<T> query = this._dbSet;
 
-            if (disableTracking) query = query.AsNoTracking();
+        //    if (disableTracking) query = query.AsNoTracking();
 
-            if (include != null) query = include(query);
+        //    if (include != null) query = include(query);
 
-            if (predicate != null) query = query.Where(predicate);
+        //    if (predicate != null) query = query.Where(predicate);
 
-            if (orderBy != null)
+        //    if (orderBy != null)
 
-                return orderBy(query).FirstOrDefault();
+        //        return orderBy(query).FirstOrDefault();
 
-            return query.FirstOrDefault();
-        }
+        //    return query.FirstOrDefault();
+        //}
 
         public IList<T> Get<TParamater>(IList<Expression<Func<T, TParamater>>> includeProperties)
 
@@ -243,46 +243,46 @@ namespace EntityFrameWorkUnitOfWork
         //    }
 
         //}
-        public T GetFirstOrDefault(Expression<Func<T, bool>> predicate = null,
+        //public T GetFirstOrDefault(Expression<Func<T, bool>> predicate = null,
 
-                                         Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+        //                                 Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
 
-                                         Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
+        //                                 Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null,
 
-                                         bool disableTracking = true)
+        //                                 bool disableTracking = true)
 
-        {
-            IQueryable<T> query = _dbSet;
+        //{
+        //    IQueryable<T> query = _dbSet;
 
-            if (disableTracking)
+        //    if (disableTracking)
 
-            {
-                query = query.AsNoTracking();
-            }
+        //    {
+        //        query = query.AsNoTracking();
+        //    }
 
-            if (include != null)
+        //    if (include != null)
 
-            {
-                query = include(query);
-            }
+        //    {
+        //        query = include(query);
+        //    }
 
-            if (predicate != null)
+        //    if (predicate != null)
 
-            {
-                query = query.Where(predicate);
-            }
+        //    {
+        //        query = query.Where(predicate);
+        //    }
 
-            if (orderBy != null)
+        //    if (orderBy != null)
 
-            {
-                return orderBy(query).FirstOrDefault();
-            }
-            else
+        //    {
+        //        return orderBy(query).FirstOrDefault();
+        //    }
+        //    else
 
-            {
-                return query.FirstOrDefault();
-            }
-        }
+        //    {
+        //        return query.FirstOrDefault();
+        //    }
+        //}
 
         public IPagedList<T> GetPagedList(Expression<Func<T, bool>> predicate = null,
 
@@ -578,5 +578,9 @@ namespace EntityFrameWorkUnitOfWork
 
         }
 
+        public IQueryable<T> Query()
+        {
+            return this._dbSet.AsQueryable();
+        }
     }
 }

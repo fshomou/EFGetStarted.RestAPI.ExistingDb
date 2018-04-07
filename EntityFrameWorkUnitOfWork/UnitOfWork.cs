@@ -28,7 +28,12 @@ namespace EntityFrameWorkUnitOfWork
             return (IRepository<TEntity>)_repositories[type];
         }
 
-        public TContext DbContext { get; }
+        public TContext DbContext {
+            get
+            {
+                return this._context;
+            }
+        }
 
         public int SaveChanges()
 

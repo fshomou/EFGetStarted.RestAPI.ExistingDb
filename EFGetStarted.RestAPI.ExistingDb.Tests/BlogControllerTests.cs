@@ -32,8 +32,8 @@ namespace EFGetStarted.RestAPI.ExistingDb.Tests
                 {
                     IBlogRepository blogsRepository = new BlogsRepository(context);
 
-                    var BlogsController = new BlogsController(blogsRepository);
-                    var result = await BlogsController.GetBlogs();
+                    //var BlogsController = new BlogsController(blogsRepository);
+                    //var result = await BlogsController.GetBlogs();
                 }
 
                 //Use a separate instance of the context to verify correct data was saved to database
